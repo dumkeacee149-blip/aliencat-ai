@@ -127,11 +127,61 @@ CRITICAL RULES:
   }
 }
 
-// Step 2: Generate alien portrait via text-to-image with strong alien prompt
+// Negative prompt to prevent human-looking outputs
+const ALIEN_NEGATIVE_PROMPT = 'human, human face, human skin, beautiful woman, handsome man, pretty face, normal eyes, realistic human, portrait photography, natural skin, human features, person, man, woman, girl, boy, attractive, beauty, normal face, earth, earthling'
+
+// Step 2: Generate alien portrait via text-to-image
 export async function generateAlienPortrait(
   prompt: string,
   _originalBase64?: string
 ): Promise<string> {
+  // Try flux-schnell first (better at creative/sci-fi prompts), fall back to wanx-v1
+  try {
+    return await generateViaFlux(prompt)
+  } catch (fluxError) {
+    const msg = fluxError instanceof Error ? fluxError.message : 'unknown'
+    console.error(`Flux failed (${msg}), falling back to wanx-v1`)
+    return await generateViaWanx(prompt)
+  }
+}
+
+// Flux model — much better at following creative prompts for non-human subjects
+async function generateViaFlux(prompt: string): Promise<string> {
+  const createResponse = await fetch(`${BASE_URL}/services/aigc/text2image/image-synthesis`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${getApiKey()}`,
+      'Content-Type': 'application/json',
+      'X-DashScope-Async': 'enable',
+    },
+    body: JSON.stringify({
+      model: 'flux-schnell',
+      input: {
+        prompt: `${prompt}, NOT a human, alien creature, extraterrestrial being`,
+      },
+      parameters: {
+        size: '1024*1024',
+      },
+    }),
+  })
+
+  if (!createResponse.ok) {
+    const errorText = await createResponse.text()
+    throw new Error(`Flux generation failed: ${createResponse.status} - ${errorText}`)
+  }
+
+  const createData = await createResponse.json()
+  const taskId = createData.output?.task_id
+
+  if (!taskId) {
+    throw new Error('No task ID from flux')
+  }
+
+  return pollTask(taskId)
+}
+
+// Wanx fallback with negative prompt to suppress human features
+async function generateViaWanx(prompt: string): Promise<string> {
   const createResponse = await fetch(`${BASE_URL}/services/aigc/text2image/image-synthesis`, {
     method: 'POST',
     headers: {
@@ -143,6 +193,7 @@ export async function generateAlienPortrait(
       model: 'wanx-v1',
       input: {
         prompt,
+        negative_prompt: ALIEN_NEGATIVE_PROMPT,
       },
       parameters: {
         n: 1,
@@ -154,14 +205,14 @@ export async function generateAlienPortrait(
 
   if (!createResponse.ok) {
     const errorText = await createResponse.text()
-    throw new Error(`Image generation failed: ${createResponse.status} - ${errorText}`)
+    throw new Error(`Wanx generation failed: ${createResponse.status} - ${errorText}`)
   }
 
   const createData = await createResponse.json()
   const taskId = createData.output?.task_id
 
   if (!taskId) {
-    throw new Error('No task ID returned from image generation')
+    throw new Error('No task ID from wanx')
   }
 
   return pollTask(taskId)
