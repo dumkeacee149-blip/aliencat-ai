@@ -34,32 +34,31 @@ export async function analyzeface(imageBase64: string): Promise<{
       content: [
         {
           type: 'text',
-          text: `You are an alien species classifier. Analyze the human face and determine which alien species they most closely match. Choose from: grey, reptilian, nordic, insectoid, shadow, feline.
+          text: `You are an alien species classifier from a sci-fi universe. Analyze the human face and classify which EXTRATERRESTRIAL alien species they match. Choose from: grey, reptilian, nordic, insectoid, shadow, feline.
 
-Species visual traits (USE these in alienPrompt):
-- grey: oversized bald head, huge solid-black almond eyes covering half the face, tiny nostrils with no nose bridge, small slit mouth, smooth pale grey-green skin, no hair, no eyebrows, thin neck
-- reptilian: green/dark-green scaly skin covering entire face, vertical slit pupils in yellow eyes, forked tongue, ridge-like brow plates, no hair, pointed teeth visible
-- nordic: pale luminous skin with faint blue glow, completely white irises, platinum white hair, elongated pointed ears, ethereal translucent quality to skin
-- insectoid: compound eyes with hundreds of facets, mandibles replacing mouth, antennae on forehead, chitinous exoskeleton skin texture, no nose, segmented face plates
-- shadow: pitch-black smoky skin that dissolves at edges, glowing white/purple eyes with no pupils, no visible nose or mouth, face partially made of dark mist/smoke
-- feline: cat-like vertical slit pupils in glowing green/yellow eyes, fur-covered face, whiskers, pointed cat ears on top of head, small triangular nose, fangs
+ALL species are ALIENS FROM OUTER SPACE — not Earth animals, not humans. Every result must look like a creature from another planet.
+
+Species alienPrompt templates (copy the template for the matched species, fill in clothing):
+- grey: "a humanoid Grey alien from outer space, extremely oversized smooth bald cranium twice the size of a human head, enormous solid pitch-black eyes with no whites taking up most of the face, grey-green rubbery skin with no pores, two tiny nostril holes where nose should be, thin lipless slit mouth, no ears visible, elongated fingers, [CLOTHING], inside a dark alien spacecraft with green holographic displays, dramatic rim lighting, science fiction concept art, ultra detailed"
+- reptilian: "a humanoid Reptilian alien from outer space, entire face and head covered in thick green-brown scales like a lizard, bright yellow eyes with vertical slit reptile pupils, prominent bony ridges above eyes, no hair anywhere, forked tongue slightly visible, rows of small sharp teeth, [CLOTHING], alien temple with ancient stone carvings background, moody orange lighting, science fiction concept art, ultra detailed"
+- nordic: "a tall Nordic alien from outer space, unnaturally perfect symmetrical face, skin has subtle bioluminescent blue-white glow from within, eyes are entirely white with no iris or pupil, long straight platinum-white hair, elongated pointed ears like an elf, faint glowing veins visible under translucent skin, [CLOTHING], crystal alien palace with aurora borealis background, ethereal blue lighting, science fiction concept art, ultra detailed"
+- insectoid: "a humanoid Insectoid alien from outer space, large bulging compound eyes made of hundreds of hexagonal facets reflecting green light, no nose at all, mouth replaced by segmented insect mandibles, two long segmented antennae growing from forehead, face covered in hard brown-green chitinous exoskeleton plates, [CLOTHING], organic alien hive interior with bioluminescent walls, science fiction concept art, ultra detailed"
+- shadow: "a mysterious Shadow alien entity from another dimension, face and body made of swirling dark smoke and void energy, features barely visible through black mist, two piercing glowing purple-white eyes floating in darkness with no face structure around them, edges of body dissolve into dark particles and smoke, [CLOTHING partially visible through smoke], dark void dimension with distant purple nebula, science fiction concept art, ultra detailed"
+- feline: "a humanoid Feline alien from outer space, face structure is a hybrid of human and alien cat with green-tinted alien skin, large glowing neon-green cat eyes with vertical slit pupils, subtle scale-like skin texture mixed with very short fine fur, small flat alien nose with two slits, pointed alien ears on top of head, thin whisker-like sensory tendrils, sharp small fangs visible, [CLOTHING], alien jungle planet with two moons in sky, green bioluminescent plants, science fiction concept art, ultra detailed"
 
 Respond in this exact JSON format:
 {
   "species": "grey",
   "matchPercent": 94.7,
   "description": "Strong cranial structure suggests Grey lineage. Analytical gaze pattern detected.",
-  "alienPrompt": "a Grey alien creature, oversized bald head, huge solid-black almond-shaped eyes covering half the face, smooth grey-green skin, no nose just tiny nostrils, small slit mouth, no eyebrows, thin neck, wearing [same clothing as photo], dramatic green sci-fi lighting, alien spaceship interior background, digital art, highly detailed"
+  "alienPrompt": "[paste the matching species template above, replace [CLOTHING] with what the person is wearing]"
 }
 
-CRITICAL RULES for alienPrompt:
-- The result MUST look like a NON-HUMAN alien creature, NOT a beautified human
-- Include at least 4-5 specific alien physical features (skin color, eye shape, no nose, etc.)
-- NEVER describe normal human features — no "attractive", no "beautiful", no normal human skin
-- Always mention the alien skin texture/color explicitly
-- Always describe non-human eyes explicitly
-- Keep clothing/pose reference from original photo
-- End with: "digital art, highly detailed, alien creature portrait"`
+CRITICAL RULES:
+- Copy the EXACT template for the matched species — do NOT simplify or shorten it
+- Only replace [CLOTHING] with the actual clothing from the photo
+- The result MUST look like an ALIEN FROM OUTER SPACE, never a human, never an Earth animal
+- NEVER generate a normal cat, a normal lizard, or any Earth creature — these are ALIEN species`
         }
       ]
     },
