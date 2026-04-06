@@ -3,8 +3,11 @@ import type { AlienSpecies } from '@/types'
 const API_KEY = process.env.DASHSCOPE_API_KEY
 const BASE_URL = 'https://dashscope.aliyuncs.com/api/v1'
 
-if (!API_KEY) {
-  throw new Error('DASHSCOPE_API_KEY not configured')
+function getApiKey(): string {
+  if (!API_KEY) {
+    throw new Error('DASHSCOPE_API_KEY not configured')
+  }
+  return API_KEY
 }
 
 interface VLMessage {
@@ -57,7 +60,7 @@ Make the alienPrompt describe a detailed alien portrait that preserves the perso
   const response = await fetch(`${BASE_URL}/services/aigc/multimodal-generation/generation`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${API_KEY}`,
+      'Authorization': `Bearer ${getApiKey()}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -116,7 +119,7 @@ export async function generateAlienPortrait(prompt: string): Promise<string> {
   const createResponse = await fetch(`${BASE_URL}/services/aigc/text2image/image-synthesis`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${API_KEY}`,
+      'Authorization': `Bearer ${getApiKey()}`,
       'Content-Type': 'application/json',
       'X-DashScope-Async': 'enable',
     },
@@ -157,7 +160,7 @@ export async function styleTransfer(
   const createResponse = await fetch(`${BASE_URL}/services/aigc/image-generation/generation`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${API_KEY}`,
+      'Authorization': `Bearer ${getApiKey()}`,
       'Content-Type': 'application/json',
       'X-DashScope-Async': 'enable',
     },
@@ -193,7 +196,7 @@ async function pollTask(taskId: string, maxAttempts = 60): Promise<string> {
 
     const statusResponse = await fetch(`${BASE_URL}/tasks/${taskId}`, {
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': `Bearer ${getApiKey()}`,
       },
     })
 
