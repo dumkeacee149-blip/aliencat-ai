@@ -7,15 +7,19 @@ import Link from 'next/link'
 export function HeroSection() {
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-14 overflow-hidden">
-      {/* Video background — slightly blurred to act as ambient backdrop */}
+      {/* Video background — poster shows instantly, video loads after */}
       <div className="absolute inset-0 -z-20 scale-110">
         <video
           autoPlay
           loop
           muted
           playsInline
+          poster="/images/hero-poster.jpg"
+          preload="auto"
           className="h-full w-full object-cover blur-[2px]"
         >
+          {/* Smaller file for mobile, full quality for desktop */}
+          <source src="/videos/hero-demo-sm.mp4" type="video/mp4" media="(max-width: 768px)" />
           <source src="/videos/hero-demo.mp4" type="video/mp4" />
         </video>
       </div>
