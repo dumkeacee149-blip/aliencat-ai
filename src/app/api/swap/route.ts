@@ -30,8 +30,8 @@ export async function POST(
     // Step 1: Analyze face and determine species
     const analysis = await analyzeface(imageBase64)
 
-    // Step 2: Generate alien portrait
-    const alienImageUrl = await generateAlienPortrait(analysis.alienPrompt)
+    // Step 2: Generate alien portrait (style transfer on original photo)
+    const alienImageUrl = await generateAlienPortrait(analysis.alienPrompt, imageBase64)
 
     const result: SwapResult = {
       id: crypto.randomUUID(),
