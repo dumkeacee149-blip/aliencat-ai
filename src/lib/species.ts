@@ -7,7 +7,7 @@ export const SPECIES_DATA: Record<AlienSpecies, SpeciesInfo> = {
     description: 'Classic alien. Runs the simulation. Probably your boss.',
     traits: ['telepathic', 'analytical', 'nocturnal', 'stoic'],
     color: '#8B9DC3',
-    emoji: '👽',
+    emoji: '',
   },
   reptilian: {
     id: 'reptilian',
@@ -15,7 +15,7 @@ export const SPECIES_DATA: Record<AlienSpecies, SpeciesInfo> = {
     description: 'Cold-blooded CEO energy. Built different (literally).',
     traits: ['strategic', 'territorial', 'patient', 'ruthless'],
     color: '#2ECC71',
-    emoji: '🦎',
+    emoji: '',
   },
   nordic: {
     id: 'nordic',
@@ -23,7 +23,7 @@ export const SPECIES_DATA: Record<AlienSpecies, SpeciesInfo> = {
     description: 'Suspiciously attractive. Main character in every timeline.',
     traits: ['charismatic', 'luminous', 'empathic', 'tall'],
     color: '#F1C40F',
-    emoji: '✨',
+    emoji: '',
   },
   insectoid: {
     id: 'insectoid',
@@ -31,7 +31,7 @@ export const SPECIES_DATA: Record<AlienSpecies, SpeciesInfo> = {
     description: 'Hive mind activated. Ultimate productivity unlocked.',
     traits: ['collective', 'efficient', 'precise', 'tireless'],
     color: '#9B59B6',
-    emoji: '🐛',
+    emoji: '',
   },
   shadow: {
     id: 'shadow',
@@ -39,7 +39,7 @@ export const SPECIES_DATA: Record<AlienSpecies, SpeciesInfo> = {
     description: 'We don\'t talk about Shadow. They prefer it that way.',
     traits: ['mysterious', 'dimensional', 'silent', 'ancient'],
     color: '#2C3E50',
-    emoji: '🌑',
+    emoji: '',
   },
   feline: {
     id: 'feline',
@@ -47,7 +47,7 @@ export const SPECIES_DATA: Record<AlienSpecies, SpeciesInfo> = {
     description: 'Yes, cat aliens exist. They\'ve been watching you sleep.',
     traits: ['independent', 'curious', 'agile', 'judgmental'],
     color: '#39FF14',
-    emoji: '🐱',
+    emoji: '',
   },
 } as const
 

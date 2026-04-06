@@ -4,36 +4,58 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-const STAR_COUNT = 3000
+const STAR_COUNT = 4000
 
 export function StarField() {
   const ref = useRef<THREE.Points>(null)
 
-  const geometry = useMemo(() => {
+  const { geometry, sizes } = useMemo(() => {
     const geo = new THREE.BufferGeometry()
     const positions = new Float32Array(STAR_COUNT * 3)
+    const sizeArr = new Float32Array(STAR_COUNT)
+    const colors = new Float32Array(STAR_COUNT * 3)
+
     for (let i = 0; i < STAR_COUNT; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 100
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 100
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 100
+      positions[i * 3] = (Math.random() - 0.5) * 120
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 120
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 120
+
+      sizeArr[i] = Math.random() * 0.15 + 0.03
+
+      // Mix green and blue-white stars
+      const isGreen = Math.random() < 0.3
+      if (isGreen) {
+        colors[i * 3] = 0.22
+        colors[i * 3 + 1] = 1
+        colors[i * 3 + 2] = 0.08
+      } else {
+        const brightness = 0.4 + Math.random() * 0.6
+        colors[i * 3] = brightness
+        colors[i * 3 + 1] = brightness
+        colors[i * 3 + 2] = brightness + Math.random() * 0.1
+      }
     }
+
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    return geo
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+
+    return { geometry: geo, sizes: sizeArr }
   }, [])
 
   useFrame((state) => {
     if (!ref.current) return
-    ref.current.rotation.y = state.clock.elapsedTime * 0.02
-    ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.01) * 0.1
+    const t = state.clock.elapsedTime
+    ref.current.rotation.y = t * 0.015
+    ref.current.rotation.x = Math.sin(t * 0.008) * 0.08
   })
 
   return (
     <points ref={ref} geometry={geometry}>
       <pointsMaterial
-        size={0.15}
-        color="#39FF14"
+        size={0.12}
+        vertexColors
         transparent
-        opacity={0.8}
+        opacity={0.7}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}

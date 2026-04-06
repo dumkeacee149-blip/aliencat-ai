@@ -6,42 +6,49 @@ import * as THREE from 'three'
 
 export function GlowOrb() {
   const meshRef = useRef<THREE.Mesh>(null)
-  const glowRef = useRef<THREE.Mesh>(null)
+  const ring1Ref = useRef<THREE.Mesh>(null)
+  const ring2Ref = useRef<THREE.Mesh>(null)
 
   useFrame((state) => {
-    if (!meshRef.current || !glowRef.current) return
+    if (!meshRef.current) return
     const t = state.clock.elapsedTime
 
-    meshRef.current.scale.setScalar(1 + Math.sin(t * 0.5) * 0.1)
-    glowRef.current.scale.setScalar(1.5 + Math.sin(t * 0.3) * 0.2)
-    glowRef.current.rotation.z = t * 0.1
+    meshRef.current.scale.setScalar(1 + Math.sin(t * 0.4) * 0.05)
+
+    if (ring1Ref.current) {
+      ring1Ref.current.rotation.x = t * 0.15
+      ring1Ref.current.rotation.y = t * 0.1
+    }
+    if (ring2Ref.current) {
+      ring2Ref.current.rotation.x = -t * 0.1
+      ring2Ref.current.rotation.z = t * 0.12
+    }
   })
 
   return (
     <group position={[0, 0, -5]}>
-      {/* Core orb */}
+      {/* Core orb — very subtle */}
       <mesh ref={meshRef}>
-        <sphereGeometry args={[1, 32, 32]} />
+        <sphereGeometry args={[0.4, 32, 32]} />
         <meshStandardMaterial
           color="#39FF14"
           emissive="#39FF14"
-          emissiveIntensity={2}
+          emissiveIntensity={1}
           transparent
-          opacity={0.3}
+          opacity={0.06}
         />
       </mesh>
 
-      {/* Outer glow */}
-      <mesh ref={glowRef}>
-        <sphereGeometry args={[1.8, 32, 32]} />
-        <meshStandardMaterial
-          color="#00D4FF"
-          emissive="#00D4FF"
-          emissiveIntensity={0.5}
-          transparent
-          opacity={0.08}
-          side={THREE.BackSide}
-        />
+      {/* Orbiting ring 1 */}
+      <mesh ref={ring1Ref}>
+        <torusGeometry args={[2.5, 0.005, 8, 64]} />
+        <meshBasicMaterial color="#39FF14" transparent opacity={0.1} />
+      </mesh>
+
+      {/* Orbiting ring 2 */}
+      <mesh ref={ring2Ref}>
+        <torusGeometry args={[3.2, 0.003, 8, 64]} />
+        <meshBasicMaterial color="#00D4FF" transparent opacity={0.06} />
       </mesh>
     </group>
   )

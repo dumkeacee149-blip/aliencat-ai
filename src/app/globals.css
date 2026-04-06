@@ -3,65 +3,206 @@
 @theme inline {
   --color-alien-green: #39FF14;
   --color-ufo-blue: #00D4FF;
-  --color-deep-space: #0a0a0f;
+  --color-deep-space: #050505;
+  --color-surface: #0c0c0c;
+  --color-surface-card: #111111;
   --font-sans: system-ui, -apple-system, sans-serif;
-  --font-mono: ui-monospace, monospace;
+  --font-mono: ui-monospace, 'SF Mono', monospace;
 }
 
 body {
-  background-color: #0a0a0f;
+  background-color: #050505;
   color: white;
   font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* Scan line animation */
+/* ── Scan animation ── */
 @keyframes scan {
-  0% {
-    top: -2px;
-  }
-  100% {
-    top: 100%;
-  }
+  0% { top: -2px; }
+  100% { top: 100%; }
 }
-
 .animate-scan {
   animation: scan 2s linear infinite;
 }
 
-/* Glow pulse for CTA buttons */
+/* ── Glow pulse ── */
 @keyframes glow-pulse {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(57, 255, 20, 0.4);
-  }
+  0%, 100% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.1), 0 0 60px rgba(57, 255, 20, 0.03); }
+  50% { box-shadow: 0 0 30px rgba(57, 255, 20, 0.2), 0 0 80px rgba(57, 255, 20, 0.06); }
 }
-
 .animate-glow {
-  animation: glow-pulse 2s ease-in-out infinite;
+  animation: glow-pulse 3s ease-in-out infinite;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
+/* ── Status pulse ── */
+@keyframes status-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.status-blink {
+  animation: status-blink 2s ease-in-out infinite;
 }
 
-::-webkit-scrollbar-track {
-  background: #0a0a0f;
+/* ── Floating animation ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(57, 255, 20, 0.2);
-  border-radius: 3px;
+/* ── Reveal slide up ── */
+@keyframes reveal-up {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-reveal-up {
+  animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(57, 255, 20, 0.4);
+/* ── Shimmer ── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(57,255,20,0.06) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
 }
 
-/* Selection color */
+/* ── Grid background ── */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── Gradient border card ── */
+.card-premium {
+  position: relative;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: border-color 0.3s, transform 0.3s;
+}
+.card-premium:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ── Text gradient ── */
+.text-gradient {
+  background: linear-gradient(135deg, #39FF14, #00D4FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Section divider ── */
+.section-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+}
+
+/* ── Before/After slider ── */
+.before-after-slider {
+  position: relative;
+  overflow: hidden;
+  cursor: ew-resize;
+  user-select: none;
+}
+.before-after-slider .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.before-after-slider .divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #39FF14;
+  box-shadow: 0 0 12px rgba(57,255,20,0.5);
+  z-index: 10;
+}
+.before-after-slider .divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #050505;
+  border: 2px solid #39FF14;
+  box-shadow: 0 0 20px rgba(57,255,20,0.3);
+}
+
+/* ── Parallax hover ── */
+@keyframes parallax-float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(2px, -4px) rotate(0.3deg); }
+  50% { transform: translate(-1px, -8px) rotate(-0.2deg); }
+  75% { transform: translate(-3px, -4px) rotate(0.1deg); }
+}
+.animate-parallax {
+  animation: parallax-float 6s ease-in-out infinite;
+}
+
+/* ── Slide in from left ── */
+@keyframes slide-in-left {
+  0% { opacity: 0; transform: translateX(-40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-left {
+  animation: slide-in-left 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Slide in from right ── */
+@keyframes slide-in-right {
+  0% { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-right {
+  animation: slide-in-right 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Scale pulse for images ── */
+@keyframes scale-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+.animate-scale-pulse {
+  animation: scale-pulse 4s ease-in-out infinite;
+}
+
+/* ── Border glow for cards on hover ── */
+.card-premium::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(57,255,20,0) 0%, rgba(57,255,20,0) 100%);
+  z-index: -1;
+  transition: background 0.5s;
+}
+.card-premium:hover::before {
+  background: linear-gradient(135deg, rgba(57,255,20,0.06) 0%, rgba(0,212,255,0.04) 100%);
+}
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
+
+/* ── Selection ── */
 ::selection {
-  background-color: rgba(57, 255, 20, 0.3);
+  background-color: rgba(57, 255, 20, 0.2);
   color: white;
 }

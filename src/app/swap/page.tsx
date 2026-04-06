@@ -13,28 +13,25 @@ export default function SwapPage() {
     <>
       <Navbar />
       <main className="flex-1 pt-24 pb-12">
-        <div className="mx-auto max-w-xl px-4">
+        <div className="mx-auto max-w-xl px-6">
           {/* Header */}
-          <div className="mb-8 text-center">
-            <h1 className="mb-2 text-3xl font-bold text-white">
+          <div className="mb-10 text-center">
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-[#39FF14]/30">
+              Species Detection
+            </p>
+            <h1 className="mb-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
               Alien Face Swap
             </h1>
-            <p className="text-sm text-white/50">
-              Upload a selfie. AI scans your facial geometry.
-              Discover your alien species in 30 seconds.
+            <p className="text-[13px] text-white/30 max-w-sm mx-auto">
+              Upload a selfie. AI scans your facial geometry and discovers your alien species in 30 seconds.
             </p>
           </div>
 
-          {/* Upload zone - hide when processing/done */}
           {(status === 'idle' || status === 'error') && <UploadZone />}
-
-          {/* Result area */}
           <SwapResult />
 
-          {/* Disclaimer */}
-          <p className="mt-8 text-center text-xs text-white/20">
+          <p className="mt-10 text-center text-[11px] text-white/10">
             Your photos are processed in real-time and not stored on our servers.
-            Results are for entertainment purposes only. Or are they?
           </p>
         </div>
       </main>

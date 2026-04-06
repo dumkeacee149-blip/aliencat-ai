@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { SPECIES_LIST } from '@/lib/species'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function SpeciesPage() {
@@ -11,61 +12,65 @@ export default function SpeciesPage() {
     <>
       <Navbar />
       <main className="flex-1 pt-24 pb-12">
-        <div className="mx-auto max-w-4xl px-4">
+        <div className="mx-auto max-w-4xl px-6">
           {/* Header */}
-          <div className="mb-12 text-center">
-            <h1 className="mb-3 text-4xl font-bold text-white">
+          <div className="mb-10 text-center">
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-[#39FF14]/30">
+              Classification Level: Omega
+            </p>
+            <h1 className="mb-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Galactic Species Database
             </h1>
-            <p className="text-white/50">
-              6 species identified so far. Classification level: OMEGA.
-            </p>
-            <p className="mt-1 text-xs text-[#39FF14]/50">
-              CLEARANCE: PUBLIC (declassified April 2026)
+            <p className="text-[13px] text-white/25">
+              6 species identified so far. Declassified April 2026.
             </p>
           </div>
 
-          {/* Species grid */}
-          <div className="space-y-6">
+          {/* Species selection banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative mb-10 overflow-hidden rounded-xl border border-white/[0.06]"
+          >
+            <div className="relative aspect-[16/8] w-full">
+              <Image
+                src="/images/species-selection.png"
+                alt="Species selection interface"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            </div>
+          </motion.div>
+
+          {/* Species list */}
+          <div className="space-y-3">
             {SPECIES_LIST.map((species, i) => (
               <motion.div
                 key={species.id}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }}
+                className="card-premium rounded-xl p-6"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-                  {/* Species icon */}
+                  {/* Species indicator */}
                   <div
-                    className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-xl text-4xl"
-                    style={{ backgroundColor: `${species.color}15` }}
+                    className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: `${species.color}08` }}
                   >
-                    {species.emoji}
+                    <div className="h-4 w-4 rounded-full status-blink" style={{ backgroundColor: species.color }} />
                   </div>
 
-                  {/* Info */}
                   <div className="flex-1">
                     <div className="mb-1 flex items-center gap-3">
-                      <h2 className="text-2xl font-bold text-white">{species.name}</h2>
-                      <div
-                        className="h-2 w-2 rounded-full animate-pulse"
-                        style={{ backgroundColor: species.color }}
-                      />
+                      <h2 className="text-lg font-semibold text-white/85">{species.name}</h2>
+                      <div className="h-[2px] w-6 rounded-full" style={{ backgroundColor: `${species.color}30` }} />
                     </div>
-                    <p className="mb-3 text-white/60">{species.description}</p>
-
-                    {/* Traits */}
-                    <div className="mb-3 flex flex-wrap gap-2">
+                    <p className="mb-3 text-[13px] leading-relaxed text-white/30">{species.description}</p>
+                    <div className="flex flex-wrap gap-2">
                       {species.traits.map((trait) => (
-                        <span
-                          key={trait}
-                          className="rounded-full border px-3 py-1 text-xs"
-                          style={{
-                            borderColor: `${species.color}30`,
-                            color: species.color,
-                          }}
-                        >
+                        <span key={trait} className="rounded-md px-2.5 py-1 text-[10px] font-medium" style={{ backgroundColor: `${species.color}08`, color: `${species.color}80` }}>
                           {trait}
                         </span>
                       ))}
@@ -77,13 +82,16 @@ export default function SpeciesPage() {
           </div>
 
           {/* CTA */}
-          <div className="mt-12 text-center">
-            <p className="mb-4 text-white/40">Which species are you?</p>
+          <div className="mt-14 text-center">
+            <p className="mb-4 text-[13px] text-white/20">Which species are you?</p>
             <Link
               href="/swap"
-              className="inline-block rounded-xl bg-[#39FF14] px-8 py-3 font-bold text-black transition hover:scale-105"
+              className="group inline-flex items-center gap-2 rounded-lg bg-[#39FF14] px-7 py-3 text-sm font-semibold text-black transition hover:shadow-[0_0_40px_rgba(57,255,20,0.15)]"
             >
               Find Out Now
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
             </Link>
           </div>
         </div>

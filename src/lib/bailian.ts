@@ -78,18 +78,36 @@ Make the alienPrompt describe a detailed alien portrait that preserves the perso
     throw new Error('No response from vision model')
   }
 
-  // Extract text content
-  const textContent = Array.isArray(content)
-    ? content.find((c: { type: string }) => c.type === 'text')?.text ?? ''
-    : typeof content === 'string' ? content : ''
-
-  // Parse JSON from response (handle markdown code blocks)
-  const jsonMatch = textContent.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
-    throw new Error('Failed to parse species classification')
+  // Extract text content — handle multiple response formats
+  let textContent = ''
+  if (typeof content === 'string') {
+    textContent = content
+  } else if (Array.isArray(content)) {
+    // Could be [{ type: 'text', text: '...' }] or [{ text: '...' }]
+    for (const item of content) {
+      if (typeof item === 'string') {
+        textContent += item
+      } else if (item?.text) {
+        textContent += item.text
+      }
+    }
   }
 
-  return JSON.parse(jsonMatch[0])
+  if (!textContent) {
+    throw new Error(`No text in VL response. Raw content: ${JSON.stringify(content).slice(0, 200)}`)
+  }
+
+  // Parse JSON from response (handle markdown code blocks, extra text)
+  const jsonMatch = textContent.match(/\{[\s\S]*?\}/)
+  if (!jsonMatch) {
+    throw new Error(`Failed to parse species classification. Response: ${textContent.slice(0, 300)}`)
+  }
+
+  try {
+    return JSON.parse(jsonMatch[0])
+  } catch {
+    throw new Error(`Invalid JSON in VL response: ${jsonMatch[0].slice(0, 200)}`)
+  }
 }
 
 // Step 2: Generate alien portrait using wanx text-to-image
@@ -110,7 +128,7 @@ export async function generateAlienPortrait(prompt: string): Promise<string> {
       parameters: {
         n: 1,
         size: '1024*1024',
-        style: '<photo>',
+        style: '<photography>',
       },
     }),
   })

@@ -6,6 +6,9 @@ import { Footer } from '@/components/layout/Footer'
 import { HeroSection } from '@/components/home/HeroSection'
 import { HowItWorks } from '@/components/home/HowItWorks'
 import { SpeciesShowcase } from '@/components/home/SpeciesShowcase'
+import { BannerSection } from '@/components/home/BannerSection'
+import { CinematicBreak } from '@/components/home/CinematicBreak'
+import { MemeGallery } from '@/components/home/MemeGallery'
 import { CTASection } from '@/components/home/CTASection'
 
 const HeroScene = dynamic(
@@ -22,8 +25,14 @@ export default function HomePage() {
           <HeroScene />
           <HeroSection />
         </div>
+        <div className="section-line mx-auto max-w-5xl" />
         <HowItWorks />
+        <BannerSection />
+        <div className="section-line mx-auto max-w-5xl" />
         <SpeciesShowcase />
+        <CinematicBreak />
+        <MemeGallery />
+        <div className="section-line mx-auto max-w-5xl" />
         <CTASection />
       </main>
       <Footer />

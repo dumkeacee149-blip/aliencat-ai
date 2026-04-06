@@ -15,7 +15,7 @@ export function HeroScene() {
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.1} />
-          <pointLight position={[0, 0, 5]} color="#39FF14" intensity={2} />
+          <pointLight position={[0, 0, 5]} color="#39FF14" intensity={0.5} />
           <StarField />
           <GlowOrb />
         </Suspense>

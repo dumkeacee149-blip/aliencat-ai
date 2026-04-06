@@ -2,20 +2,20 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'AlienCat AI — Reveal Your True Alien Form',
-  description: 'ran an AI on 10,000 human faces. 47% weren\'t human. Free alien face swap. Upload your selfie, discover your species.',
-  keywords: ['alien', 'face swap', 'AI', 'alien cat', 'species', 'UFO'],
+  title: 'aliencatai — Reveal Your True Alien Form',
+  description: 'ran an AI on 10,000 human faces. 47% weren\'t human. Free alien face swap powered by AI.',
+  keywords: ['alien', 'face swap', 'AI', 'alien cat', 'species', 'UFO', 'meme'],
   openGraph: {
-    title: 'AlienCat AI — Reveal Your True Alien Form',
+    title: 'aliencatai — Reveal Your True Alien Form',
     description: 'ran an AI on 10,000 human faces. 47% weren\'t human. you should probably check.',
-    siteName: 'AlienCat AI',
+    siteName: 'aliencatai',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AlienCat AI — Reveal Your True Alien Form',
+    title: 'aliencatai — Reveal Your True Alien Form',
     description: 'ran an AI on 10,000 human faces. 47% weren\'t human. you should probably check.',
-    creator: '@aliencat_ai',
+    creator: '@alienaixyz',
   },
 }
 
