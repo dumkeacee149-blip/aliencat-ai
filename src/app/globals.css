@@ -6,14 +6,26 @@
   --color-deep-space: #050505;
   --color-surface: #0c0c0c;
   --color-surface-card: #111111;
-  --font-sans: system-ui, -apple-system, sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', monospace;
+  --font-sans: var(--font-exo2), system-ui, sans-serif;
+  --font-mono: var(--font-spacemono), ui-monospace, monospace;
+  --font-heading: var(--font-orbitron), sans-serif;
 }
 
 body {
   background-color: #050505;
   color: white;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-exo2), system-ui, sans-serif;
+}
+
+/* Heading font — sci-fi Orbitron */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-orbitron), sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Mono font — Space Mono */
+code, pre, kbd, samp, .font-mono {
+  font-family: var(--font-spacemono), ui-monospace, monospace;
 }
 
 /* ── Scan animation ── */
