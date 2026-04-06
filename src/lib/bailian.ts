@@ -128,62 +128,11 @@ CRITICAL RULES for alienPrompt:
   }
 }
 
-// Step 2: Generate alien portrait using style transfer on original photo
+// Step 2: Generate alien portrait via text-to-image with strong alien prompt
 export async function generateAlienPortrait(
   prompt: string,
-  originalBase64?: string
+  _originalBase64?: string
 ): Promise<string> {
-  // If we have the original image, use style transfer to preserve face structure
-  if (originalBase64) {
-    return generateViaStyleTransfer(prompt, originalBase64)
-  }
-  // Fallback to text-to-image
-  return generateViaTextToImage(prompt)
-}
-
-// Style transfer: transforms original photo into alien version (preserves pose/face structure)
-async function generateViaStyleTransfer(
-  prompt: string,
-  imageBase64: string
-): Promise<string> {
-  const dataUri = `data:image/jpeg;base64,${imageBase64}`
-
-  const createResponse = await fetch(`${BASE_URL}/services/aigc/image-generation/generation`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${getApiKey()}`,
-      'Content-Type': 'application/json',
-      'X-DashScope-Async': 'enable',
-    },
-    body: JSON.stringify({
-      model: 'wanx-style-repaint-v1',
-      input: {
-        image_url: dataUri,
-        style_index: -1,
-        prompt: `alien creature transformation: ${prompt}`,
-      },
-    }),
-  })
-
-  if (!createResponse.ok) {
-    const errorText = await createResponse.text()
-    // If style transfer fails, fall back to text-to-image
-    console.error(`Style transfer failed, falling back to text2image: ${errorText}`)
-    return generateViaTextToImage(prompt)
-  }
-
-  const createData = await createResponse.json()
-  const taskId = createData.output?.task_id
-
-  if (!taskId) {
-    throw new Error('No task ID returned from style transfer')
-  }
-
-  return pollTask(taskId)
-}
-
-// Fallback: pure text-to-image generation
-async function generateViaTextToImage(prompt: string): Promise<string> {
   const createResponse = await fetch(`${BASE_URL}/services/aigc/text2image/image-synthesis`, {
     method: 'POST',
     headers: {
@@ -214,43 +163,6 @@ async function generateViaTextToImage(prompt: string): Promise<string> {
 
   if (!taskId) {
     throw new Error('No task ID returned from image generation')
-  }
-
-  return pollTask(taskId)
-}
-
-// Step 3: Style transfer - repaint portrait as alien
-export async function styleTransfer(
-  originalImageUrl: string,
-  stylePrompt: string
-): Promise<string> {
-  const createResponse = await fetch(`${BASE_URL}/services/aigc/image-generation/generation`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${getApiKey()}`,
-      'Content-Type': 'application/json',
-      'X-DashScope-Async': 'enable',
-    },
-    body: JSON.stringify({
-      model: 'wanx-style-repaint-v1',
-      input: {
-        image_url: originalImageUrl,
-        style_index: -1,
-        prompt: stylePrompt,
-      },
-    }),
-  })
-
-  if (!createResponse.ok) {
-    const errorText = await createResponse.text()
-    throw new Error(`Style transfer failed: ${createResponse.status} - ${errorText}`)
-  }
-
-  const createData = await createResponse.json()
-  const taskId = createData.output?.task_id
-
-  if (!taskId) {
-    throw new Error('No task ID returned from style transfer')
   }
 
   return pollTask(taskId)
